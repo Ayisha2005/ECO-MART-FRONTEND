@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import NotificationToast from './components/common/NotificationToast';
@@ -60,39 +60,8 @@ import DriverLoginPage from './pages/transport/driver/DriverLoginPage';
 import DriverDashboard from './pages/transport/driver/DriverDashboard';
 import TransportDashboard from './pages/transport/TransportDashboard';
 
-// Initial Root Redirector
-const RootRedirector = () => {
-  const { isAuthenticated, role } = useAuth();
-
-  if (!isAuthenticated || !role) {
-    return <Navigate to="/register" replace />;
-  }
-
-  switch (role) {
-    case 'ADMIN':
-      return <Navigate to="/admin/dashboard" replace />;
-    case 'SELLER':
-      return <Navigate to="/seller/dashboard" replace />;
-    case 'BUYER':
-      return <Navigate to="/buyer/dashboard" replace />;
-    case 'TRANSPORT_MANAGER':
-    case 'TRANSPORTATION':
-      return <Navigate to="/transport/manager/dashboard" replace />;
-    case 'TRANSPORT_DRIVER':
-      return <Navigate to="/transport/driver/dashboard" replace />;
-    default:
-      return <Navigate to="/register" replace />;
-  }
-};
-
 // Forbidden Transport Public Self-Registration
 const ForbiddenTransportRegister = () => {
-  const { showNotification } = useAuth();
-  
-  React.useEffect(() => {
-    showNotification("Access Denied! Transportation accounts are created through ECO MART partner invitations. Public self-registration is strictly disabled.", "error");
-  }, [showNotification]);
-
   return <Navigate to="/register" replace />;
 };
 
@@ -104,8 +73,8 @@ export const App = () => {
           <BrowserRouter>
             <NotificationToast />
             <Routes>
-              {/* Root / Route */}
-              <Route path="/" element={<RootRedirector />} />
+              {/* Root / Route ALWAYS opens directly to /register */}
+              <Route path="/" element={<Navigate to="/register" replace />} />
 
               {/* Public Auth Routes */}
               <Route path="/register" element={<RegisterPage />} />
@@ -305,7 +274,7 @@ export const App = () => {
                 }
               />
 
-              {/* TRANSPORT MANAGER / PARTNER Protected Routes (All 10 Sidebar Sub-Pages) */}
+              {/* TRANSPORT MANAGER / PARTNER Protected Routes */}
               <Route
                 path="/transport/manager/dashboard"
                 element={
@@ -455,8 +424,8 @@ export const App = () => {
                 }
               />
 
-              {/* Catch-All Route */}
-              <Route path="*" element={<RootRedirector />} />
+              {/* Catch-All Route ALWAYS opens Registration Page */}
+              <Route path="*" element={<Navigate to="/register" replace />} />
             </Routes>
           </BrowserRouter>
         </DataProvider>
