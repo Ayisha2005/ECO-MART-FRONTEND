@@ -16,6 +16,8 @@
     padding: 0;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background-color: #f8fafc;
+    background-image: radial-gradient(rgba(16, 185, 129, 0.04) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
     color: #0f172a;
     overflow-x: hidden;
   }
@@ -27,7 +29,27 @@
     padding: 0;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
+}
+
+/* Light Minimal ECO MART Logo Background Watermark */
+.bg-eco-minimal-watermark {
+  position: relative;
+}
+
+.bg-eco-minimal-watermark::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/ecomart-logo.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 550px;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 0;
+  filter: grayscale(20%);
 }
 
 /* Custom Scrollbar */
@@ -70,14 +92,14 @@
 
 /* Glassmorphism utils */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .glass-dark {
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(51, 65, 85, 0.5);
